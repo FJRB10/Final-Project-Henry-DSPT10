@@ -1,0 +1,21 @@
+steps:
+  # Paso 1: Construye la imagen de Docker
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/places-api', '.']
+
+  # Paso 2: Empuja (push) la imagen a Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/places-api']
+
+  # Paso 3: Despliega la imagen en Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: ['run', 'deploy', 'places-api',
+           '--image', 'gcr.io/$PROJECT_ID/places-api',
+           '--region', 'us-central1',
+           '--platform', 'managed',
+           '--allow-unauthenticated',
+           '--vpc-connector', '$(VPC_CONNECTOR_NAME)']
+
+images:
+  - 'gcr.io/$PROJECT_ID/places-api'
