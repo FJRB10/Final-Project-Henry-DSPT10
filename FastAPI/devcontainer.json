@@ -1,0 +1,25 @@
+{
+   "name":"Devcontainer para FastAPI",
+   "build": {
+     "dockerfile": "../dockerfile.dev"
+   },
+   "customizations": {
+     "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "ms-python.black-formatter",
+                "ms-python.debugpy",
+                "ms-azuretools.vscode-docker"
+            ],
+            "settings": {}
+     }
+   },
+   "forwardPorts": [
+    "8000:8000"   
+],
+"workspaceMount": "source=${localWorkspaceFolder},target=/code,type=bind, consistency=delegated",
+"workspaceFolder": "/funcion.py",
+"runArgs": []
+}
+"-u" , "root"
