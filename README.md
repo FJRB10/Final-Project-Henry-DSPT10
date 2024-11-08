@@ -276,13 +276,15 @@ La audiencia objetivo de este servicio son personas que buscan dónde invertir s
 
 ### Componetes principales y flujo de datos
 
-El flujo de datos en este proyecto comienza con la extracción de información de las aplicaciones Google Maps y Yelp. De estas plataformas se obtienen datos como el número de reseñas, contenido de las reseñas, puntuación, promedio de puntuaciones, nombre del negocio, dirección, ciudad, latitud, longitud, entre muchas otras características.
+El flujo de datos en este proyecto comienza con la extracción de información de las aplicaciones Google Maps y Yelp. De estas plataformas se obtienen datos como el número de reseñas, contenido de las reseñas, puntuación, promedio de puntuaciones, nombre del negocio, dirección, ciudad, latitud, longitud, entre muchas otras características. Estos datos se almacenan en Buckets en la nube de Google (GCP), que funcionan como un Data Lake, ya que los datos están prácticamente sin procesar y no han sufrido ninguna modificación.
 
-Luego, los datos pasan por un proceso de transformación, en el cual se ajustan y se eliminan aquellas características que no sean relevantes para el proyecto. Este proceso de transformación no compromete la integridad ni la calidad de los datos. Al finalizar la transformación, los datos resultantes se cargan en un data warehouse alojado en la nube de Google (GCP). Este flujo constituye el proceso de ETL (Extracción, Transformación y Carga).
+Antes de transformar los datos, se realiza un análisis preliminar para comprender su composición, características, valores nulos o vacíos y un análisis estadístico (máximos, mínimos, desviación estándar, promedio y cuartiles) de los datos numéricos. A continuación, se aplican pequeñas transformaciones a datos que estén agrupados en una sola columna o característica. Con este paso concluido, se procede a realizar el análisis exploratorio de datos (EDA).
 
-Para automatizar aún más el proceso y gestionar los flujos de trabajo, se utilizará Apache Airflow, que permitirá orquestar la obtención de los datos finales del ETL y realizar las acciones necesarias para que la información esté disponible en el data warehouse. Desde ahí, se podrán exportar los datos necesarios para llevar a cabo el análisis exploratorio de datos (EDA).
+Después, los datos pasan a un proceso de transformación en el cual se ajustan y eliminan las características que no sean relevantes para el proyecto, sin comprometer su integridad ni calidad. Una vez terminada la transformación, los datos resultantes se cargan en un data warehouse alojado en la nube de Google (GCP), específicamente en el servicio de BigQuery. Este flujo constituye el proceso de ETL (Extracción, Transformación y Carga).
 
-Después del análisis EDA, los datos se enviarán a un script que contiene el modelo de recomendación basado en Machine Learning. El modelo se entrenará con los nuevos datos y luego se evaluarán las métricas seleccionadas, así como el desempeño del modelo. Paralelamente, se producirá el dashboard. En este paso, los datos derivados del EDA se enviarán a la herramienta de visualización escogida, donde se crearán los dashboards y visualizaciones necesarias.
+Para automatizar y gestionar el flujo de trabajo, se utiliza Apache Airflow, que orquesta la obtención de los datos finales del ETL y realiza las acciones necesarias para que la información esté disponible en el data warehouse. En Apache Airflow se emplean DAGs con tareas para ejecutar el proceso de extracción, transformación y carga de los datos. La extracción se realiza desde los Buckets de Google Storage, la transformación se lleva a cabo en el servicio de cómputo de GCP y la carga de datos se realiza en BigQuery, que funciona como nuestro Data Warehouse.
+
+Con el proceso ETL completo, los datos se envían a un script que contiene el modelo de recomendación basado en Machine Learning. El modelo se entrenará con los nuevos datos, y luego se evaluarán las métricas seleccionadas y el desempeño del modelo. Paralelamente, se generará el dashboard. En este paso, los datos derivados del proceso de ETL se enviarán a la herramienta de visualización seleccionada, donde se crearán los dashboards y visualizaciones necesarias.
 
 Al final se subirán todas las actualizaciones pertinentes a la pagina web y a la aplicación.
 
@@ -292,6 +294,74 @@ Al final se subirán todas las actualizaciones pertinentes a la pagina web y a l
 El funcionamiento del servicio es el mismo tanto en la página web como en la aplicación móvil. Primero, el usuario ingresa y, desde la página principal, selecciona el rubro o sector y la ciudad donde desea realizar el análisis. Luego, se dirige a la sección de inversiones, donde deberá ingresar el monto que tiene o desea invertir.
 
 Con esta información, el programa se encargará de buscar las mejores ubicaciones según el sector seleccionado y mostrará algunas recomendaciones clave. Estas sugerencias se basan en las valoraciones, tanto positivas como negativas, que han recibido otros negocios en la misma categoría.
+
+### ETL
+Usando Cloud Run y Cloud Build ejecutamos una API que consulta de manera periódica las fuentes de datos de Google y Yelp para subirlos a nuestro datalake en Cloud Storage (Buckets).
+
+Cloud Build nos permite desplegar fácilmente la API utilizando un archivo GET de FastAPI que especifica el procedimiento a realizar con los datos (archivo main.py). Para que el proceso funcione de forma dockerizada, se requieren los archivos cloudbuild.yaml y Dockerfile. Estos archivos se suben al repositorio del proyecto en GitHub, donde Cloud Build permite añadir un trigger que se activa con cada push a la rama principal (main) e inicia el proceso en Cloud Run. Este proceso solicita los datos a la API de Google Maps y luego almacena los resultados en el datalake.
+
+La información nueva que llega a los buckets de nuestro datalake será parte del posterior proceso de Transformación y Carga, orquestado mediante DAGs en Airflow desde Composer.
+
+### Modelo ER
+![Modelo Entidad Relacion](./Images/Modelo%20ER.png)
+
+En este diagrama de entidad-relación observamos cinco tablas: cuatro corresponden a los datos de Yelp y una a los datos de Google Maps. Esta tabla de Google Maps, denominada maps_final, es una unión de varios archivos extraídos de Google Maps. La tabla maps_final tiene como clave primaria la columna gmap_id y como clave foránea la columna ciudad. Esta clave foránea permite establecer una relación entre los datos de Yelp y los de Google Maps. La relación entre la columna ciudad en maps_final y la tabla business es de uno a uno, ya que los nombres de las ciudades en un país no se repiten.
+
+La tabla business está relacionada no solo con maps_final, sino también con las tablas tips y review, a través de la columna business_id. En la tabla business, business_id es la clave principal, mientras que en las tablas tips y review es una clave foránea. La relación entre business y las tablas tips y review es de uno a muchos, ya que un negocio puede tener múltiples comentarios (tips) y reseñas (review).
+
+De manera similar, la tabla users está relacionada con las tablas tips y review, pero en este caso, la columna que permite esta relación es user_id. En la tabla users, user_id es la clave principal, y en las tablas tips y review es una clave foránea. La relación aquí también es de uno a muchos, ya que un usuario puede realizar múltiples comentarios (tips) y reseñas (reviews) en distintos negocios o en el mismo negocio.
+
+### Análisis de datos de muestra
+Para asegurar que la muestra sea representativa de la población, es crucial emplear técnicas adecuadas de muestreo. Entre las opciones existentes, hemos optado por el muestreo por conglomerados. Esta metodología consiste en dividir la población en grupos homogéneos entre sí e internamente heterogéneos (conglomerados). Para entrenar el modelo de aprendizaje automático (ML), se seleccionan una o más de estas unidades y, dentro de ellas, se eligen individuos de manera aleatoria.
+
+En nuestro caso, hemos definido las ciudades como los conglomerados y seleccionaremos las 10 ciudades con más establecimientos que cuenten con reseñas. Este tamaño de muestra representa aproximadamente el 6.31% de la población total.
+
+Para crear la muestra de entrenamiento para el modelo de ML, elegiremos aleatoriamente una cantidad de individuos dentro de las ciudades del estado de New York. Se recomienda un tamaño de muestra de entre 10,000 y 50,000 datos, con la consideración de que estos deben estar balanceados, lo cual no siempre se refleja en la población original.
+
+### Proof of concept ML
+### 1. Objetivo del PoC
+El propósito del PoC es evaluar la viabilidad de dos modelos ML:
+
+1. Un modelo que clasifique los comentarios en "positivos" o "negativos" utilizando BERT (Bidirectional Encoder Representations from Transformers).
+2. Un modelo adicional que, también utilizando BERT, clasifique los comentarios en "útiles" o "no útiles", con el fin de mejorar la relevancia del contenido presentado a los usuarios.
+
+Además, se busca identificar términos frecuentes en comentarios positivos y negativos para un mejor entendimiento de los patrones lingüísticos, ajustados según filtros específicos que dependen del rubro al que pertenezcan.
+
+### 2. Descripción del Metódo
+Se utilizó el muestreo por conglomerados para garantizar una representación adecuada de la población. Las ciudades fueron definidas como los conglomerados, y se seleccionaron las 10 ciudades con la mayor cantidad de establecimientos con reseñas, representando aproximadamente el 8% de la población total. Posteriormente, se seleccionó aleatoriamente una cantidad de individuos dentro de ciudades del estado de NY, con el objetivo de formar una muestra balanceada para entrenar ambos modelos.
+
+El tamaño sugerido de la muestra varía entre 10,000 y 50,000 datos. Es esencial que esta muestra esté balanceada, aunque este equilibrio no siempre se refleja en la población original.
+
+### 3. Entrenamiento de Modelos con BERT
+**Modelo 1: Clasificación de Comentarios en "Positivos" o "Negativos"**
+
+* Preprocesamiento de los Comentarios: Limpieza y tokenización del texto.
+* Fine-tuning de BERT: Ajuste del modelo utilizando una muestra etiquetada.
+* Evaluación del Modelo: Medición del rendimiento con métricas clave.
+
+**Modelo 2: Clasificación de Comentarios en "Útiles" o "No Útiles"**
+
+* Preprocesamiento Similar: Se utilizaron técnicas de preprocesamiento comparables a las del primer modelo.
+* Fine-tuning de BERT: Se aplicó BERT nuevamente, ajustando el modelo para distinguir entre comentarios útiles y no útiles.
+* Validación: Evaluación del rendimiento y generalización a través de técnicas de validación cruzada.
+
+### 4. Identificación de Términos Frecuentes
+Además de la clasificación, se realizó un análisis de términos frecuentes en los comentarios positivos y negativos. Este análisis aplica filtros específicos basados en el rubro, para identificar los términos que más afectan la percepción de los usuarios.
+
+* Extracción y Filtrado de Términos: Adaptación de los términos según el sector correspondiente.
+
+### 5. Resultados
+**Matriz de Confusión Comentarios Positivos/Negativos**
+
+![Matriz de Confusión Comentarios Positivos/Negativos](./Images/Matriz%20de%20confusion%20comentarios%20positivos-negativos.png)
+
+**Matriz de Confusión Comentarios Útiles/No Útiles**
+
+![Matriz de Confusión Comentarios Útiles/No Útiles](./Images/Matriz%20de%20confusion%20comentarios%20utiles-no%20utiles.png)
+
+### Recuento de terminos frecuentes
+
+![Recuento de terminos frecuentes](./Images/Recuento%20de%20terminos%20frecuentes.png)
 
 ### Siguientes pasos
 Si el proyecto continúa, las posibles mejoras incluyen la expansión de los sectores o rubros que se pueden analizar, así como la incorporación de más ciudades. Como se comenzó con datos solo de Estados Unidos, sería pertinente ir implementando progresivamente todas las ciudades, al igual que los diferentes rubros. También se podría realizar un análisis de mercado para identificar en qué países se encuentra la mayor parte del público objetivo y en qué países o ciudades desean invertir.
