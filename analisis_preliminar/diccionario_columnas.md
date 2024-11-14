@@ -1,6 +1,5 @@
 # Diccionario de Datos
 
-
 ---
 
 ## Plataforma Yelp
@@ -46,7 +45,6 @@
 - **yelping_since**: Fecha en la que el usuario se unió a Yelp.
 - **fans**: Número de seguidores del usuario.
 - **average_stars**: Calificación promedio dada por el usuario en sus reseñas.
-
 
 ---
 
