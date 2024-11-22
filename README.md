@@ -244,7 +244,7 @@ Cantidad promedio de reseñas por negocio en una ciudad puede darte una idea del
 
 * **Objetivo**: Crecer en densidad de reseñas un 10% por sector en ciudades objetivo, considerando que esta densidad indicaría un nivel saludable de interacción de los consumidores y un ecosistema de negocios activos.
 
-## 2. **2.	Porcentaje de negocios iguales o por encima del promedio de estrellas por categoría en la ciudad**
+## 2. **Porcentaje de negocios iguales o por encima del promedio de estrellas por categoría en la ciudad**
 
 Evalúa como está la competencia de un sector o rubro en específico. Más específicamente muestra la cantidad de negocios que tienen calificaciones iguales o promedio al promedio.
 
@@ -445,13 +445,21 @@ Asimismo con utlizamos en modelo en una aplicación con **Streamlit** para anali
 <table>
     <tr>
         <td> <h2>Página Estado de Mercado 1</h2> </td>
+    </tr>
+    <tr>
+        <td> <img src = "./Images/Dashboard Estado de Mercado 1.png" alt = "Página Estado de Mercado 1" width = "900"> </td>
+    </tr>
+    <tr>
         <td> <h2>Página Estado de Mercado 2</h2> </td>
+    </tr>
+    <tr>
+        <td> <img src = "./Images/Dashboard Estado de Mercado 2.png" alt = "Página Estado de Mercado 2" width = "900"> </td>
+    </tr>
+    <tr>
         <td> <h2>Página Ubicación</h2> </td>
     </tr>
     <tr>
-        <td> <img src = "./Images/Dashboard Estado de Mercado 1.png" alt = "Página Estado de Mercado 1" width = "700"> </td>
-        <td> <img src = "./Images/Dashboard Estado de Mercado 2.png" alt = "Página Estado de Mercado 2" width = "700"> </td>
-        <td> <img src = "./Images/Dashboard Ubicación.png" alt = "Página Ubicación" width = "700"> </td>
+        <td> <img src = "./Images/Dashboard Ubicación.png" alt = "Página Ubicación" width = "900"> </td>
     </tr>
 </table>
 
