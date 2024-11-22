@@ -2,7 +2,7 @@
 
 ![Logo Socius Lab](./Images/LOGO%20(color).png)
 
-## Alcance del proyecto
+# Alcance del proyecto
 Las tareas que se realizarán en este proyecto están documentadas en el tablero de actividades de Trello, algunas de estas son:
 
 * Formulación de minimo 3 KPI's.
@@ -18,14 +18,14 @@ El objetivo final de este proyecto es desarrollar un MVP (Producto Mínimo Viabl
 
 Dado que este proyecto es un MVP, se utilizarán solo algunos datos. Específicamente, se trabajará con datos de una sola ciudad y se considerarán únicamente dos sectores.
 
-## Equipo de trabajo - Roles y responsabilidades
+# Equipo de trabajo - Roles y responsabilidades
 * <a href = "https://github.com/DomiAndi"> Leslie Andrea </a> - Data Analyst
 * <a href = "https://github.com/matiasbarriosled"> Matias Barrios </a> - Data Engineer
 * <a href = "https://github.com/moralespbl"> Pablo Morales </a> - ML Engineer
 * <a href = "https://github.com/AgustinNiederle"> Agustin Niederle </a> - Data Scientist
 * <a href = "https://github.com/FJRB10"> Francisco Ramirez </a> - Analista Funcional
 
-## Metodología de trabajo
+# Metodología de trabajo
 La metodología de trabajo que se decidió utilizar está basada en Scrum, ya que todo el equipo tiene una reunión diaria. Sin embargo, esta reunión excede el tiempo estipulado por Scrum para una daily; en este caso, la reunión diaria dura entre 45 y 60 minutos. En esta reunión se expone el avance logrado, los problemas encontrados, cómo se resolvieron o si aún no se ha encontrado una solución, y finalmente, se discute con qué se continuará.
 
 Las tareas que se deben realizar por cada sptint se ingresan en la aplicación Trello y se asigna a la persona o personas encargadas de dicha tarea. La tarea solo puede tener 3 estados dentro de la aplicación de Trello y son:
@@ -36,7 +36,7 @@ Las tareas que se deben realizar por cada sptint se ingresan en la aplicación T
 
 Además para saber cuanto es la duración aproximada de cada tarea se realizo un diagrama de Gannt en la aplocación Gantter de Google y la aplicación Trello también nos permite visualizar un diagrama de Gannt de acuerdo a la duración de las actividades.
 
-## Cronograma general - GANNT
+# Cronograma general - GANNT
 <table>
     <tr>
         <td> <img src = "https://www.conectasoftware.com/wp-content/uploads/2021/04/Trello-Emblema-1300x867.png" alt = "Logo de Trello" Width = "700"> </td>
@@ -49,9 +49,9 @@ Además para saber cuanto es la duración aproximada de cada tarea se realizo un
 </table>
 
 
-## Análisis preliminar de los datos
-### Datasets de Google Maps
-### Metadata de sitios
+# Análisis preliminar de los datos
+## Datasets de Google Maps
+## Metadata de sitios
 Las siguientes observaciones son de los datos sin hacer ninguna modificación o alteración.
 
 1. **Valores Nulos y Vacíos**:
@@ -96,7 +96,7 @@ Comparando con el informe anterior, las principales diferencias son:
 
 En resumen, el nuevo informe muestra una ligera mejora en algunas columnas, pero persisten problemas significativos de nulos y duplicados en columnas clave, lo que requiere atención adicional. Otros como `desciption` o `price` contienen un elevado porcentaje de valores nulos (91% y 90%) seguido por `hours` (26%) y `MISC`.
 
-### Datasets de Yelp
+## Datasets de Yelp
 Desde el dataset de Google Maps se encontro que las ciudades con más reseñas son:
 * **Houston**
 * **New York**
@@ -111,7 +111,7 @@ Desde el dataset de Google Maps se encontro que las ciudades con más reseñas s
 
 Con estas ciudades se filtro la data de los datasets de Yelp.
 
-### Reviews
+## Reviews
 1. Se verifico si existían valores nulos o vacios en el dataset *review*.
     * Se encontro que no habían valores nulos o vacios en ninguna de las columnas, por lo que se procede a revisar la cantidad de duplicados.
 
@@ -123,7 +123,7 @@ Con estas ciudades se filtro la data de los datasets de Yelp.
     * Se encontro que los datos son casi identicos en todas sus características, lo unico que suele cambiar es la fecha y el review_id, por lo que podriamos decir que son datos que se ingresaron mal por algun bug de la aplicacion.
 
 
-### Users
+## Users
 1. Se reviso solo la columna user_id, la cual no debería tener duplicados.
     * Se observo que hay un total de 10298 duplicados para la columna user_id.
 
@@ -140,7 +140,7 @@ Con estas ciudades se filtro la data de los datasets de Yelp.
 5. Se eligieron dos valores de la columna text al azar que estuvierann dentro de la lista de duplicados y se procedio analizar los registros.
     * Se encontro que los registros eran de usuarios diferentes y de diferentes lugares, por lo tanto, no se pueden cosiderar como duplicados y se mantienen dentro del dataset.
 
-## EDA de los datos
+# EDA de los datos
 En base al análisis preliminar de los datos obtenidos de Google, para reducir la data, vamos a analizar solamente los estados más rentables para el modelo de negocio planteado:
 California, Florida, Illinois, Nevada, Nueva York, Pennsylvania y Texas.
 De los datos de Yelp decidimos reducir la información de los datasets Business, Check-in, reviews, Maps_Category, Tips y Users, para los lugares antes mencionados.
@@ -226,46 +226,46 @@ Vemos que, ante un texto de consejo, existe un rate para el compliment count (ca
 
 ![Falta de compliment count](./Images/14%20falta%20de%20compliment%20count.png)
 
-### **Conclusiones Generales**
+## **Conclusiones Generales**
 En base al análisis de valores nulos, faltantes, duplicados y de outliers, cuyos resultados se adjuntan en las tablas, podemos rescatar cuales categorías serán útiles de cada tabla.
 Del df_maps_final: Name, address, gmap_id, description, latitude, longitude, avg_rating, num_of_reviews, url y city. Además, podríamos usar description y avg_rating para relacionar con ML.
 La tabla TIPS puede servir para entrenar el LLM y entender las devoluciones en relación al modelo de negocio: Nube de palabras para cada categoría de negocio, por ejemplo.
 Podemos identificar de este análisis que los restoranes (bares y vida nocturna) son el rubro con más reseñas, por lo que podríamos considerarlo como el rubro con el cual entrenar nuestro modelo MVP.
 Finalmente, observamos que no existe una correlación evidente en USER, quizá entre usefull y fans podríamos proyectar alguna correlación útil.
 
-## 3 KPI's
-### 1. **Densidad de reseñas por ciudad**
+# 3 KPI's
+## 1. **Densidad de reseñas por ciudad**
 
 Cantidad promedio de reseñas por negocio en una ciudad puede darte una idea del nivel de actividad o interés en los negocios locales. Ciudades con más reseñas por negocio pueden indicar una mayor interacción de los consumidores, lo que es un buen indicador para posibles negocios.
 
 * **Formula**: (Densidad de reseñas = Total de reseñas en una ciudad / Número de negocios en la ciudad)
 
-* **Periodicidad**: Trimestral o Semestral: Para detectar cambios estacionales o tendencias en la actividad de los consumidores.
+* **Periodicidad**: Trimestral: Para detectar cambios estacionales o tendencias en la actividad de los consumidores.
 
-* **Objetivo**: Comparar ciudades y buscar aquellas con una densidad de reseñas alta, idealmente por encima del promedio.
+* **Objetivo**: Crecer en densidad de reseñas un 10% por sector en ciudades objetivo, considerando que esta densidad indicaría un nivel saludable de interacción de los consumidores y un ecosistema de negocios activos.
 
-### 2. **Indicador de Expansión de Clientela**
+## 2. **2.	Porcentaje de negocios iguales o por encima del promedio de estrellas por categoría en la ciudad**
 
-Porcentaje de crecimiento de check-ins de un periodo con respecto a otros negocios.
+Evalúa como está la competencia de un sector o rubro en específico. Más específicamente muestra la cantidad de negocios que tienen calificaciones iguales o promedio al promedio.
 
-* **Formula**: (Cantidad de check-ins del periodo actual – Cantidad de check-ins del periodo anterior) / Cantidad de check-ins del periodo anterior * 100
-
-* **Periodicidad**: Mensual.
-
-* **Objetivo**: Identificar establecimientos con un crecimiento positivo de clientes del x% durante un periodo dterminado.
-
-### 3. **Promedio de rating por categoría en la ciudad**
-
-Evalúa el promedio de calificaciones (estrellas) por categoría de negocio en una ciudad, para identificar los sectores mejor valorados.
-
-* **Formula**: (Promedio de rating = Sumatoria de ratings de una categoría / Numero de negocios en esa categoría)
+* **Formula**: Cantidad de negocios >= Promedio de estellas
 
 * **Periodicidad**: Semestral.
 
-* **Objetivo**: Priorizar ciudades y categorías con un promedio de rating mayor a 4.
+* **Objetivo**: Crecer un 10% o más por categoría en las ciudades objetivo, ya que refleja una alta competencia en el mercado y además refleja que la gente le gusta el rubro.
 
-## Diseño detallado
-### Objetivos, contexto y público objetivo
+## 3. **Promedio de estrellas por categoría en la ciudad**
+
+Evalúa el promedio de calificaciones (estrellas) por categoría de negocio en una ciudad, para identificar los sectores mejor valorados.
+
+* **Formula**: (Promedio de estrellas = Sumatoria de estrellas de una categoría / Numero de reseñas en esa categoría)
+
+* **Periodicidad**: Semestral.
+
+* **Objetivo**: Lograr o mantener un promedio de 4.0 estrellas o más por categoría en las ciudades objetivo, dado que este nivel de calificación generalmente refleja satisfacción del cliente y una imagen positiva en el mercado local.
+
+# Diseño detallado
+## Objetivos, contexto y público objetivo
 Los objetivos de este MVP son dos. El primero es probar si existe interés y demanda por este tipo de servicio antes de realizar una inversión en un desarrollo completo. El segundo es mostrar el valor potencial del servicio con una funcionalidad mínima para atraer a inversores.
 
 Todo emprendedor e inversor enfrenta la incertidumbre de decidir en qué sector o rubro invertir. Si este sector requiere de un lugar físico, surge una nueva duda: ¿Dónde establecer el emprendimiento o la inversión? Además, incluso después de resolver estas preguntas, surge otro desafío: si no se tiene experiencia previa en el sector o rubro, el camino hacia el éxito será más complicado.
@@ -274,7 +274,7 @@ Es por esto que nace Socius Lab, una aplicación que permite consultar el estado
 
 La audiencia objetivo de este servicio son personas que buscan dónde invertir su dinero, así como emprendedores que desean saber dónde invertir su dinero y tiempo
 
-### Componetes principales y flujo de datos
+## Componetes principales y flujo de datos
 
 El flujo de datos en este proyecto comienza con la extracción de información de las aplicaciones Google Maps y Yelp. De estas plataformas se obtienen datos como el número de reseñas, contenido de las reseñas, puntuación, promedio de puntuaciones, nombre del negocio, dirección, ciudad, latitud, longitud, entre muchas otras características. Estos datos se almacenan en Buckets en la nube de Google (GCP), que funcionan como un Data Lake, ya que los datos están prácticamente sin procesar y no han sufrido ninguna modificación.
 
@@ -290,19 +290,19 @@ Al final se subirán todas las actualizaciones pertinentes a la pagina web y a l
 
 ![Ilustración flujo de datos](./Images/Data%20Adicional.png)
 
-### Funcioamiento del servicio
+## Funcioamiento del servicio
 El funcionamiento del servicio es el mismo tanto en la página web como en la aplicación móvil. Primero, el usuario ingresa y, desde la página principal, selecciona el rubro o sector y la ciudad donde desea realizar el análisis. Luego, se dirige a la sección de inversiones, donde deberá ingresar el monto que tiene o desea invertir.
 
 Con esta información, el programa se encargará de buscar las mejores ubicaciones según el sector seleccionado y mostrará algunas recomendaciones clave. Estas sugerencias se basan en las valoraciones, tanto positivas como negativas, que han recibido otros negocios en la misma categoría.
 
-### ETL
+## ETL
 Usando Cloud Run y Cloud Build ejecutamos una API que consulta de manera periódica las fuentes de datos de Google y Yelp para subirlos a nuestro datalake en Cloud Storage (Buckets).
 
 Cloud Build nos permite desplegar fácilmente la API utilizando un archivo GET de FastAPI que especifica el procedimiento a realizar con los datos (archivo main.py). Para que el proceso funcione de forma dockerizada, se requieren los archivos cloudbuild.yaml y Dockerfile. Estos archivos se suben al repositorio del proyecto en GitHub, donde Cloud Build permite añadir un trigger que se activa con cada push a la rama principal (main) e inicia el proceso en Cloud Run. Este proceso solicita los datos a la API de Google Maps y luego almacena los resultados en el datalake.
 
 La información nueva que llega a los buckets de nuestro datalake será parte del posterior proceso de Transformación y Carga, orquestado mediante DAGs en Airflow desde Composer.
 
-### Modelo ER
+## Modelo ER
 ![Modelo Entidad Relacion](./Images/Modelo%20ER.png)
 
 En este diagrama de entidad-relación observamos cinco tablas: cuatro corresponden a los datos de Yelp y una a los datos de Google Maps. Esta tabla de Google Maps, denominada maps_final, es una unión de varios archivos extraídos de Google Maps. La tabla maps_final tiene como clave primaria la columna gmap_id y como clave foránea la columna ciudad. Esta clave foránea permite establecer una relación entre los datos de Yelp y los de Google Maps. La relación entre la columna ciudad en maps_final y la tabla business es de uno a uno, ya que los nombres de las ciudades en un país no se repiten.
@@ -311,14 +311,14 @@ La tabla business está relacionada no solo con maps_final, sino también con la
 
 De manera similar, la tabla users está relacionada con las tablas tips y review, pero en este caso, la columna que permite esta relación es user_id. En la tabla users, user_id es la clave principal, y en las tablas tips y review es una clave foránea. La relación aquí también es de uno a muchos, ya que un usuario puede realizar múltiples comentarios (tips) y reseñas (reviews) en distintos negocios o en el mismo negocio.
 
-### Análisis de datos de muestra
+## Análisis de datos de muestra
 Para asegurar que la muestra sea representativa de la población, es crucial emplear técnicas adecuadas de muestreo. Entre las opciones existentes, hemos optado por el muestreo por conglomerados. Esta metodología consiste en dividir la población en grupos homogéneos entre sí e internamente heterogéneos (conglomerados). Para entrenar el modelo de aprendizaje automático (ML), se seleccionan una o más de estas unidades y, dentro de ellas, se eligen individuos de manera aleatoria.
 
 En nuestro caso, hemos definido las ciudades como los conglomerados y seleccionaremos las 10 ciudades con más establecimientos que cuenten con reseñas. Este tamaño de muestra representa aproximadamente el 6.31% de la población total.
 
 Para crear la muestra de entrenamiento para el modelo de ML, elegiremos aleatoriamente una cantidad de individuos dentro de las ciudades del estado de New York. Se recomienda un tamaño de muestra de entre 10,000 y 50,000 datos, con la consideración de que estos deben estar balanceados, lo cual no siempre se refleja en la población original.
 
-### Proof of concept ML
+## Proof of concept ML
 ### 1. Objetivo del PoC
 El propósito del PoC es evaluar la viabilidad de dos modelos ML:
 
@@ -363,12 +363,104 @@ Además de la clasificación, se realizó un análisis de términos frecuentes e
 
 ![Recuento de terminos frecuentes](./Images/Recuento%20de%20terminos%20frecuentes.png)
 
-### Siguientes pasos
+# Modelo de ML
+
+## Preprocesamiento EDA
+Se realiza un preprocesamiento que permite construir un modelo MVP ágil y listo para ser desplegado en Streamlit utilizando nuestros recursos.
+
+En primer lugar, se utiliza WordCloud para identificar cuáles son las palabras que más se repiten, tanto en las críticas como en los comentarios positivos, previamente clasificados mediante BERT.
+
+KeyBERT facilita la generación del modelo MVP a partir de una lista en formato CSV (o PDF) almacenada en nuestro data warehouse. Basándose en los resultados de WordCloud, se determinan los sustantivos con mayor frecuencia en cada conjunto de comentarios (positivos y negativos). Estos sustantivos se cuentan y se asocian con los adjetivos vinculados a ellos.
+
+De esta manera, el algoritmo puede mostrar de forma simple y clara las principales razones de las críticas o alabanzas, incluso ante una gran cantidad de comentarios cargados. Esto se realiza para cada rubro y en cada ciudad seleccionada por el usuario de la aplicación.
+
+## BERT
+**(Bidirectional Encoder Representations from Transformers)** es un modelo de lenguaje basado en la arquitectura **Transformer** desarrollado por Google en 2018. Su principal característica es que es **bidireccional**, lo que significa que entiende el contexto de una palabra en una frase a partir de las palabras que vienen antes y después de ella, a diferencia de modelos anteriores como LSTM o GRU, que procesan el texto en una sola dirección (de izquierda a derecha o de derecha a izquierda).
+
+### **¿Por qué usamos BERT para procesamiento de lenguaje natural (PNL)?**
+BERT ha sido uno de los modelos más revolucionarios en el campo de PNL por varias razones:
+
+1. **Contextualización Bidireccional**:  
+   BERT es bidireccional, lo que le permite comprender mejor el contexto de las palabras dentro de una oración. Modelos anteriores solo consideraban el contexto unidireccional (izquierda a derecha o viceversa), lo que limitaba la capacidad para entender el significado completo de una palabra que depende de otras palabras que están más adelante en el texto. Esta característica le da a BERT una ventaja en tareas complejas de PNL como la clasificación de sentimientos, reconocimiento de entidades nombradas (NER), y la traducción automática.
+
+2. **Entrenamiento Previo con Grandes Volúmenes de Datos**:  
+   BERT fue preentrenado en grandes cantidades de texto de Wikipedia y el BookCorpus. Este preentrenamiento le permitió aprender una representación profunda de las relaciones entre palabras y contextos, lo que lo hace altamente efectivo en tareas de comprensión de lenguaje. A diferencia de otros modelos más simples, BERT puede adaptarse y afinarse a tareas específicas de PNL con menos datos adicionales.
+
+3. **Transferencia de Aprendizaje**:  
+   BERT es un modelo preentrenado que puede adaptarse a una amplia gama de tareas de PNL mediante un proceso llamado **fine-tuning**. Esto significa que, tras el preentrenamiento, el modelo puede ser ajustado con una pequeña cantidad de datos específicos para realizar tareas como clasificación de sentimientos, análisis de sentimientos, respuesta a preguntas, etc. Esto lo hace muy flexible y eficiente, ya que no es necesario entrenar desde cero un modelo para cada tarea.
+
+4. **Atención Multicanal**:  
+   La arquitectura de Transformer, que es la base de BERT, utiliza mecanismos de **atención** que permiten al modelo enfocarse en partes relevantes del texto mientras procesa la información. Esto es especialmente útil en tareas que requieren una comprensión detallada de la relación entre diferentes partes de una oración o documento.
+
+## Matriz de confusión
+<div style="text-align: center;">
+    <img src="./Images/MatrizConfusion.jpg" alt="Matriz de Confusión" width="908" height="600">
+</div>
+
+Las **métricas** que se pueden extraer de la **matriz de confusión** ayudan a evaluar el desempeño de un modelo de clasificación, como el de BERT para la predicción de comentarios positivos o negativos. Las métricas clave son:
+- **Exactitud**: 93.1% (el modelo acierta el 93.1% de las predicciones).
+- **Precisión**: 91.6% (de las predicciones positivas, el 91.6% son correctas).
+- **Recuperación**: 94.9% (el modelo captura el 94.9% de los comentarios positivos).
+- **F1-Score**: 93.0% (buena combinación de precisión y recuperación).
+- **Especificidad**: 91.3% (buena identificación de los comentarios negativos).
+
+En resumen, el modelo BERT muestra un excelente desempeño en la clasificación de sentimientos, con altas métricas de precisión, recuperación y F1-Score, lo que indica que es muy efectivo tanto al identificar comentarios positivos como negativos.
+
+## **BERT Sentiment Classifier**
+### **Entrenamiento y afinado del modelo**
+
+### **Descripción General**
+Implementamos un modelo de clasificación de sentimientos binario utilizando BERT como modelo base. Está diseñado para gestionar datos desde Google Cloud Storage y subir el modelo entrenado nuevamente al bucket de Google Cloud. El objetivo principal es proporcionar una solución automatizada y escalable para entrenar y almacenar modelos de clasificación de texto.
+
+### **Características Principales**
+- **Modelo**: `bert-base-cased` de Transformers con capa de clasificación personalizada.
+- **Gestión de datos**: Descarga desde Google Cloud Storage y personalización de datasets.
+- **Entrenamiento**: Optimización con AdamW y ajuste del aprendizaje con scheduler lineal.
+- **Guardado**: Subida automática del modelo entrenado al bucket de Google Cloud.
+
+## **Utilizacion del modelo: Aplicacion para usuarios**
+### **Descripción General**
+Asimismo con utlizamos en modelo en una aplicación con **Streamlit** para analizar comentarios de negocios basados en datos de Yelp. Combina análisis de sentimientos usando un modelo BERT y extracción de palabras clave con **KeyBERT**. Además, permite visualizar información del negocio y estadísticas relacionadas con sus comentarios.
+
+### **Componentes Principales**
+1. **Interfaz con Streamlit:**
+   - Ofrece un formulario para seleccionar una ciudad y un ID de negocio.
+   - Permite ingresar el número de palabras clave a extraer.
+
+2. **Procesamiento de Datos:**
+   - Carga datos de negocios y comentarios desde archivos JSON.
+   - Filtra información según el ID del negocio seleccionado.
+   - Muestra detalles del negocio como nombre, dirección, estrellas y categorías.
+   - Procesa comentarios relacionados y genera estadísticas como fechas extremas y número de comentarios con altas calificaciones.
+
+3. **Resultados Visualizados:**
+   - Lista los primeros 5 comentarios positivos y negativos.
+   - Muestra las palabras clave principales extraídas de comentarios positivos y negativos.
+
+# Dashboard
+<div style="text-align: center;">
+    <h1> <a href = "https://lookerstudio.google.com/reporting/233c975f-06ca-4a44-b630-61c0dbc06390"> Enlace Dashboard </a> </h1>
+</div>
+
+<table>
+    <tr>
+        <td> <h2>Página Estado de Mercado 1</h2> </td>
+        <td> <h2>Página Estado de Mercado 2</h2> </td>
+        <td> <h2>Página Ubicación</h2> </td>
+    </tr>
+    <tr>
+        <td> <img src = "./Images/Dashboard Estado de Mercado 1.png" alt = "Página Estado de Mercado 1" width = "700"> </td>
+        <td> <img src = "./Images/Dashboard Estado de Mercado 2.png" alt = "Página Estado de Mercado 2" width = "700"> </td>
+        <td> <img src = "./Images/Dashboard Ubicación.png" alt = "Página Ubicación" width = "700"> </td>
+    </tr>
+</table>
+
+# Siguientes pasos
 Si el proyecto continúa, las posibles mejoras incluyen la expansión de los sectores o rubros que se pueden analizar, así como la incorporación de más ciudades. Como se comenzó con datos solo de Estados Unidos, sería pertinente ir implementando progresivamente todas las ciudades, al igual que los diferentes rubros. También se podría realizar un análisis de mercado para identificar en qué países se encuentra la mayor parte del público objetivo y en qué países o ciudades desean invertir.
 
 Otra posible mejora sería la recolección de datos de otras fuentes además de Google Maps y Yelp. Estas fuentes no se limitarían únicamente a reseñas, sino que también podrían incluir datos sobre negocios populares, estadísticas y análisis de diferentes sectores por país, o incluso información no pública de empresas recopilada por terceros y disponible para la compra.
 
-### Mockups
+# Mockups
 <table>
     <tr>
         <td> <h2>Página inicial</h2> </td>
@@ -381,7 +473,7 @@ Otra posible mejora sería la recolección de datos de otras fuentes además de 
     
 </table>
 
-## Implementación Stack Tecnologico
+# Implementación Stack Tecnologico
 <table>
     <tr style = "text-align: center">
         <td> <h2>Python</h2> </td>
@@ -395,12 +487,12 @@ Otra posible mejora sería la recolección de datos de otras fuentes además de 
     </tr>
     <tr style = "text-align: center">
         <td> <h2>Apache Airflow</h2> </td>
-        <td> <h2>Power BI</h2> </td>
+        <td> <h2>Looker Studiox</h2> </td>
         <td> <h2>Scikit Learn</h2> </td>
     </tr>
     <tr>
         <td> <img src = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/AirflowLogo.png/1200px-AirflowLogo.png" alt = "Logo Apache Airflow" Width = "700"> </td>
-        <td> <img src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdhsYAK6nmwgqgYPX0dw4RORIUdC_cphd7qQ&s" alt = "Logo Google Colab" Width = "700"> </td>
+        <td> <img src = "https://www.accuranker.com/static/4b6ff180c18f1b81655710ecae4150cf/1721f/Looker_6f803d7fdc.png" alt = "Logo Google Colab" Width = "700"> </td>
         <td> <img src = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Scikit_learn_logo_small.svg/1200px-Scikit_learn_logo_small.svg.png" alt = "Logo Scikit Learn" Width = "700"> </td>
     </tr>
     <tr style = "text-align: center">
